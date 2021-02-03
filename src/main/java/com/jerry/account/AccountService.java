@@ -65,12 +65,20 @@ public class AccountService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String emailOrNickname) throws UsernameNotFoundException {
         Account account = accountRepository.findByEmail(emailOrNickname);
-        if(account == null) { // 만약 이메일로 조회해서 null이면
-            account = accountRepository.findByNickname(emailOrNickname); // 닉네임으로 조회
+        if(account == null) {
+            account = accountRepository.findByNickname(emailOrNickname);
         }
-        if(account == null) { // 닉네임으로 조회해도 null이면
-            throw new UsernameNotFoundException(emailOrNickname); // emailOrNickname에 해당하는 유저가 없다는 예외 발생
+        if(account == null) {
+            throw new UsernameNotFoundException(emailOrNickname);
         }
-        return new UserAccount(account); // 유저가 있으면 pricipal에 해당하는 유저를 넘겨준다.
+        return new UserAccount(account);
+    }
+
+    public Account getAccount(String nickname) {
+        Account account = accountRepository.findByNickname(nickname);
+        if (account == null) {
+            throw new IllegalArgumentException(nickname + "에 해당하는 사용자가 없습니다.");
+        }
+        return account;
     }
 }
