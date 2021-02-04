@@ -1,5 +1,6 @@
 package com.jerry.account;
 
+import com.jerry.account.form.Profile;
 import com.jerry.account.form.SignUpForm;
 import com.jerry.domain.Account;
 import lombok.RequiredArgsConstructor;
@@ -86,5 +87,12 @@ public class AccountService implements UserDetailsService {
     public void completeSignUp(Account account) {
         account.completeSignUp();
         login(account);
+    }
+
+    public void updateProfile(Account account, Profile profile) {
+        account.setBio(profile.getBio());
+        account.setUrl(profile.getUrl());
+        account.setOccupation(profile.getOccupation());
+        accountRepository.save(account);
     }
 }
