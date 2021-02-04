@@ -51,6 +51,18 @@
                             </span>
                             <span th:text="${#temporals.format(account.joinedAt, 'yyyy년 M월 가입')}" class="col-9"></span>
                         </p>
+                        <p th:if="${!#strings.isEmpty(account.url)}">
+                                <span style="font-size: 20px;">
+                                    <i class="fa fa-link col-1"></i>
+                                </span>
+                            <span th:text="${account.url}" class="col-11"></span>
+                        </p>
+                        <p th:if="${!#strings.isEmpty(account.occupation)}">
+                                <span style="font-size: 20px;">
+                                    <i class="fa fa-briefcase col-1"></i>
+                                </span>
+                            <span th:text="${account.occupation}" class="col-9"></span>
+                        </p>
                         <div th:if="${isOwner}">
                             <a class="btn btn-outline-primary" href="#" th:href="@{/settings/profile}">프로필 수정</a>
                         </div>
