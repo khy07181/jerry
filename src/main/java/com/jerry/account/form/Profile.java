@@ -18,10 +18,13 @@ public class Profile {
     @Length(max = 50)
     private String occupation;
 
+    private String profileImage;
+
     public Profile(Account account) {
         this.bio = account.getBio();
         this.url = account.getUrl();
         this.occupation = account.getOccupation();
+        this.profileImage = account.getProfileImage();
     }
 
 }
