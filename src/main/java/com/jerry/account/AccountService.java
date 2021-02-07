@@ -1,5 +1,6 @@
 package com.jerry.account;
 
+import com.jerry.account.form.Notifications;
 import com.jerry.account.form.Profile;
 import com.jerry.account.form.SignUpForm;
 import com.jerry.domain.Account;
@@ -16,6 +17,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Service
@@ -35,12 +37,14 @@ public class AccountService implements UserDetailsService {
         return newAccount;
     }
 
-    private Account saveNewAccount(SignUpForm signUpForm) {
+    private Account saveNewAccount(@Valid SignUpForm signUpForm) {
         Account account = Account.builder()
                 .email(signUpForm.getEmail())
                 .nickname(signUpForm.getNickname())
                 .password(passwordEncoder.encode(signUpForm.getPassword()))
                 .postCreatedByWeb(true)
+                .postCommentedByWeb(true)
+                .postLikedByWeb(true)
                 .build();
 
         return accountRepository.save(account);
@@ -99,6 +103,16 @@ public class AccountService implements UserDetailsService {
 
     public void updatePassword(Account account, String newPassword) {
         account.setPassword(passwordEncoder.encode(newPassword));
+        accountRepository.save(account);
+    }
+
+    public void updateNotifications(Account account, Notifications notifications) {
+        account.setPostCommentedByEmail(notifications.isPostCommentedByEmail());
+        account.setPostCreatedByWeb(notifications.isPostCreatedByWeb());
+        account.setPostCommentedByEmail(notifications.isPostCommentedByEmail());
+        account.setPostCommentedByWeb(notifications.isPostCommentedByWeb());
+        account.setPostLikedByEmail(notifications.isPostLikedByEmail());
+        account.setPostLikedByWeb(notifications.isPostLikedByWeb());
         accountRepository.save(account);
     }
 }

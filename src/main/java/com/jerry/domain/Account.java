@@ -41,7 +41,15 @@ public class Account {
 
     private boolean postCreatedByEmail;
 
-    private boolean postCreatedByWeb;
+    private boolean postCreatedByWeb = true;
+
+    private boolean postCommentedByEmail;
+
+    private boolean postCommentedByWeb = true;
+
+    private boolean postLikedByEmail;
+
+    private boolean postLikedByWeb = true;
 
     public void generateEmailCheckToken() {
         this.emailCheckToken = UUID.randomUUID().toString();

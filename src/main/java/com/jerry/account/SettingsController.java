@@ -1,5 +1,6 @@
 package com.jerry.account;
 
+import com.jerry.account.form.Notifications;
 import com.jerry.account.form.PasswordForm;
 import com.jerry.account.form.Profile;
 import com.jerry.account.validator.PasswordFormValidator;
@@ -29,6 +30,7 @@ public class SettingsController {
     static final String SETTINGS = "settings";
     static final String PROFILE = "/profile";
     static final String PASSWORD = "/password";
+    static final String NOTIFICATIONS = "/notifications";
 
     private final AccountService accountService;
 
@@ -75,5 +77,25 @@ public class SettingsController {
         accountService.updatePassword(account, passwordForm.getNewPassword());
         attributes.addFlashAttribute("message", "패스워드를 변경했습니다.");
         return "redirect:/" + SETTINGS + PASSWORD;
+    }
+
+    @GetMapping(NOTIFICATIONS)
+    public String updateNotificationsForm(@CurrentAccount Account account, Model model) {
+        model.addAttribute(account);
+        model.addAttribute(new Notifications(account));
+        return SETTINGS + NOTIFICATIONS;
+    }
+
+    @PostMapping(NOTIFICATIONS)
+    public String updateNotifications(@CurrentAccount Account account, @Valid Notifications notifications, Errors errors,
+                                      Model model, RedirectAttributes attributes) {
+        if (errors.hasErrors()) {
+            model.addAttribute(account);
+            return SETTINGS + NOTIFICATIONS;
+        }
+
+        accountService.updateNotifications(account, notifications);
+        attributes.addFlashAttribute("message", "알림 설정을 변경했습니다.");
+        return "redirect:/" + SETTINGS + NOTIFICATIONS;
     }
 }

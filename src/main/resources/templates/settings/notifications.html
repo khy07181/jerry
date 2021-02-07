@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header.html :: head"></head>
+
+<body class="bg-light">
+    <div th:replace="fragments/main-nav.html :: main-nav"></div>
+    <div class="container">
+        <div class="row mt-5 justify-content-center">
+            <div class="col-2">
+                <div th:replace="fragments/settings-menu.html :: settings-menu(currentMenu='notifications')"></div>
+            </div>
+            <div class="col-8">
+                <div th:if="${message}" class="alert alert-info alert-dismissible fade show mt-3" role="alert">
+                    <span th:text="${message}">완료</span>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="row">
+                    <h2 class="col-12">알림 설정</h2>
+                </div>
+                <div class="row mt-3" th:fragment="profile-form">
+                    <form class="col-12" action="#" th:action="@{/settings/notifications}" th:object="${notifications}" method="post" novalidate>
+                        <div class="alert alert-light" role="alert">
+                            <strong><a href="#" th:href="@{/settings/keywords}">관심 있는 주제</a>에 대한 글이 새로 올라왔을 때 </strong> 알림을 받을 방법을 설정하세요.
+                        </div>
+                        <div class="form-group">
+                            <div class="custom-control custom-switch custom-control-inline">
+                                <input type="checkbox" th:field="*{postCreatedByEmail}" class="custom-control-input" id="postCreatedByEmail">
+                                <label class="custom-control-label" for="postCreatedByEmail">이메일로 받기</label>
+                            </div>
+                            <div class="custom-control custom-switch custom-control-inline">
+                                <input type="checkbox" th:field="*{postCreatedByWeb}" class="custom-control-input" id="postCreatedByWeb">
+                                <label class="custom-control-label" for="postCreatedByWeb">웹으로 받기</label>
+                            </div>
+                        </div>
+                        <div class="alert alert-light" role="alert">
+                            <strong>댓글</strong>알림을 받을 방법을 설정하세요.
+                        </div>
+                        <div class="form-group">
+                            <div class="custom-control custom-switch custom-control-inline">
+                                <input type="checkbox" th:field="*{postCommentedByEmail}" class="custom-control-input" id="postCommentedByEmail">
+                                <label class="custom-control-label" for="postCommentedByEmail">이메일로 받기</label>
+                            </div>
+                            <div class="custom-control custom-switch custom-control-inline">
+                                <input type="checkbox" th:field="*{postCommentedByWeb}" class="custom-control-input" id="postCommentedByWeb">
+                                <label class="custom-control-label" for="postCommentedByWeb">웹으로 받기</label>
+                            </div>
+                        </div>
+                        <div class="alert alert-light" role="alert">
+                            <strong>게시글에 좋아요</strong>에 대한 알림을 받을 방법을 설정하세요.
+                        </div>
+                        <div class="form-group">
+                            <div class="custom-control custom-switch custom-control-inline">
+                                <input type="checkbox" th:field="*{postLikedByEmail}" class="custom-control-input" id="postLikedByEmail">
+                                <label class="custom-control-label" for="postLikedByEmail">이메일로 받기</label>
+                            </div>
+                            <div class="custom-control custom-switch custom-control-inline">
+                                <input type="checkbox" th:field="*{postLikedByWeb}" class="custom-control-input" id="postLikedByWeb">
+                                <label class="custom-control-label" for="postLikedByWeb">웹으로 받기</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <button class="btn btn-outline-primary" type="submit" aria-describedby="submitHelp">저장하기</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
