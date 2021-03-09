@@ -15,7 +15,7 @@ public class SignUpFormValidator implements Validator {
 
     @Override
     public boolean supports(Class<?> aClass) {
-        return aClass.isAssignableFrom(SignUpForm.class); // 검증할 인스턴스의 타입
+        return aClass.isAssignableFrom(SignUpForm.class);
     }
 
     @Override
