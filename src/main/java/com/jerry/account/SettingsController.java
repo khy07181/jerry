@@ -1,25 +1,28 @@
 package com.jerry.account;
 
-import com.jerry.account.form.NicknameForm;
-import com.jerry.account.form.Notifications;
-import com.jerry.account.form.PasswordForm;
-import com.jerry.account.form.Profile;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jerry.account.form.*;
 import com.jerry.account.validator.NicknameValidator;
 import com.jerry.account.validator.PasswordFormValidator;
 import com.jerry.domain.Account;
+import com.jerry.domain.Tag;
+import com.jerry.tag.TagRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import static com.jerry.account.SettingsController.ROOT;
 import static com.jerry.account.SettingsController.SETTINGS;
@@ -35,10 +38,12 @@ public class SettingsController {
     static final String PASSWORD = "/password";
     static final String NOTIFICATIONS = "/notifications";
     static final String ACCOUNT = "/account";
+    static final String TAGS = "/tags";
 
     private final AccountService accountService;
     private final ModelMapper modelMapper;
     private final NicknameValidator nicknameValidator;
+    private final TagRepository tagRepository;
 
     @InitBinder("passwordForm")
     public void passwordFormInitBinder(WebDataBinder webDataBinder) {
@@ -129,4 +134,25 @@ public class SettingsController {
         attributes.addFlashAttribute("message", "닉네임을 수정했습니다.");
         return "redirect:/" + SETTINGS + ACCOUNT;
     }
+
+    @GetMapping(TAGS)
+    public String updateTags(@CurrentAccount Account account, Model model) throws JsonProcessingException {
+        model.addAttribute(account);
+        return SETTINGS + TAGS;
+    }
+
+    @PostMapping(TAGS + "/add")
+    @ResponseBody
+    public ResponseEntity addTag(@CurrentAccount Account account, @RequestBody TagForm tagForm) {
+        String title = tagForm.getTagTitle();
+
+        Tag tag = tagRepository.findByTitle(title);
+        if (tag == null) {
+            tag = tagRepository.save(Tag.builder().title(tagForm.getTagTitle()).build());
+        }
+
+        accountService.addTag(account, tag);
+        return ResponseEntity.ok().build();
+    }
+
 }
