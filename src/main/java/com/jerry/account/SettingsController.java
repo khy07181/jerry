@@ -1,7 +1,6 @@
 package com.jerry.account;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jerry.account.form.*;
 import com.jerry.account.validator.NicknameValidator;
 import com.jerry.account.validator.PasswordFormValidator;
@@ -19,10 +18,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
-
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 import static com.jerry.account.SettingsController.ROOT;
 import static com.jerry.account.SettingsController.SETTINGS;
