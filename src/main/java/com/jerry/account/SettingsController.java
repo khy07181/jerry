@@ -19,6 +19,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 
+import java.util.Set;
+import java.util.stream.Collectors;
+
 import static com.jerry.account.SettingsController.ROOT;
 import static com.jerry.account.SettingsController.SETTINGS;
 
@@ -133,6 +136,9 @@ public class SettingsController {
     @GetMapping(TAGS)
     public String updateTags(@CurrentAccount Account account, Model model) throws JsonProcessingException {
         model.addAttribute(account);
+        Set<Tag> tags = accountService.getTags(account);
+        model.addAttribute("tags", tags.stream().map(Tag::getTitle).collect(Collectors.toList()));
+
         return SETTINGS + TAGS;
     }
 
